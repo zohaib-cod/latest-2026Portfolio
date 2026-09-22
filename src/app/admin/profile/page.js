@@ -21,7 +21,7 @@ export default function AdminProfile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/profile');
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/profile`);
         if (res.data) setProfile(res.data);
       } catch (error) {
         console.error('Failed to fetch profile', error);
@@ -37,7 +37,7 @@ export default function AdminProfile() {
     setSaving(true);
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put('http://localhost:5000/api/profile', profile, {
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/profile`, profile, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Profile updated successfully!');

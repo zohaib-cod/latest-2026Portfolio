@@ -16,7 +16,7 @@ export default function AdminSkills() {
 
   const fetchSkills = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/skills');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/skills`);
       setSkills(res.data);
     } catch (error) {
       console.error('Failed to fetch skills', error);
@@ -32,7 +32,7 @@ export default function AdminSkills() {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:5000/api/skills/${id}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/skills/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchSkills();
@@ -45,7 +45,7 @@ export default function AdminSkills() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.post('http://localhost:5000/api/skills', formData, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/skills`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setFormData({ name: '', level: '', icon: '' });

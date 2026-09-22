@@ -20,7 +20,7 @@ export default function AdminExperience() {
 
   const fetchExperiences = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/experience');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/experience`);
       setExperiences(res.data);
     } catch (error) {
       console.error('Failed to fetch experiences', error);
@@ -36,7 +36,7 @@ export default function AdminExperience() {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:5000/api/experience/${id}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/experience/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchExperiences();
@@ -49,7 +49,7 @@ export default function AdminExperience() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.post('http://localhost:5000/api/experience', formData, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/experience`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setFormData({

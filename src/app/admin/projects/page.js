@@ -22,7 +22,7 @@ export default function AdminProjects() {
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/projects');
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/projects`);
       setProjects(res.data);
     } catch (error) {
       console.error('Failed to fetch projects', error);
@@ -66,7 +66,7 @@ export default function AdminProjects() {
     if (!confirm('Are you sure you want to delete this project?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:5000/api/projects/${id}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/projects/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchProjects();
@@ -87,9 +87,9 @@ export default function AdminProjects() {
       };
 
       if (editingId) {
-        await axios.put(`http://localhost:5000/api/projects/${editingId}`, payload, config);
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/projects/${editingId}`, payload, config);
       } else {
-        await axios.post('http://localhost:5000/api/projects', payload, config);
+        await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/projects`, payload, config);
       }
       
       setShowModal(false);
