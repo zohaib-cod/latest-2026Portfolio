@@ -12,7 +12,7 @@ export default function Experience() {
   useEffect(() => {
     const fetchExp = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/experience');
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/experience`);
         setExperiences(data);
       } catch (error) {
         setExperiences([

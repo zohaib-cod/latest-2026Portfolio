@@ -14,31 +14,11 @@ export default function Projects() {
     // In production, this URL will come from .env
     const fetchProjects = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/projects');
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/projects`);
         setProjects(data);
       } catch (error) {
         console.error("Error fetching projects", error);
-        // Fallback placeholder for demonstration
-        setProjects([
-          {
-            _id: '1',
-            title: 'Quantum Engine',
-            description: 'Advanced 3D WebGL physics engine built with Three.js and WebAssembly.',
-            technologies: ['React', 'Three.js', 'WebGL', 'C++'],
-            images: ['https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'],
-            githubUrl: '#',
-            liveUrl: '#'
-          },
-          {
-            _id: '2',
-            title: 'Neural Net Visualizer',
-            description: 'Interactive neural network architecture visualization tool for ML researchers.',
-            technologies: ['Next.js', 'Framer Motion', 'TensorFlow.js', 'Python'],
-            images: ['https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2565&auto=format&fit=crop'],
-            githubUrl: '#',
-            liveUrl: '#'
-          }
-        ]);
+        setProjects([]);
       } finally {
         setLoading(false);
       }
@@ -77,7 +57,7 @@ export default function Projects() {
                 <div className="relative h-72 w-full overflow-hidden">
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all z-10 duration-500" />
                   <img 
-                    src={project.images[0] || 'https://via.placeholder.com/600x400'} 
+                    src={project.imageUrl || (project.images && project.images[0]) || 'https://via.placeholder.com/600x400'} 
                     alt={project.title} 
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                   />

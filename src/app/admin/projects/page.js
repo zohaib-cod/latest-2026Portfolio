@@ -9,6 +9,7 @@ export default function AdminProjects() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -99,6 +100,31 @@ export default function AdminProjects() {
     }
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const token = localStorage.getItem('adminToken');
+    const uploadData = new FormData();
+    uploadData.append('image', file);
+
+    try {
+      setUploadingImage(true);
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/upload`, uploadData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setFormData(prev => ({...prev, imageUrl: res.data.url}));
+    } catch (error) {
+      console.error('Image upload failed', error);
+      alert('Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
@@ -167,8 +193,19 @@ export default function AdminProjects() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Image URL</label>
-                <input type="text" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="w-full bg-black border border-white/10 rounded px-4 py-2 text-white" />
+                <label className="block text-sm text-gray-400 mb-1">Image URL or Upload File</label>
+                <div className="flex gap-2">
+                  <input type="text" placeholder="Paste image link here" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="flex-1 bg-black border border-white/10 rounded px-4 py-2 text-white" />
+                  <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" id="imageUpload" />
+                  <label htmlFor="imageUpload" className="px-4 py-2 bg-gray-800 text-white rounded cursor-pointer hover:bg-gray-700 flex items-center justify-center">
+                    {uploadingImage ? 'Uploading...' : 'Upload File'}
+                  </label>
+                </div>
+                {formData.imageUrl && (
+                  <div className="mt-2">
+                    <img src={formData.imageUrl} alt="Preview" className="h-20 w-auto rounded border border-white/10" />
+                  </div>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <input type="checkbox" id="featured" checked={formData.featured} onChange={e => setFormData({...formData, featured: e.target.checked})} />
