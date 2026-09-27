@@ -119,7 +119,7 @@ export default function AdminProjects() {
       setFormData(prev => ({...prev, imageUrl: res.data.url}));
     } catch (error) {
       console.error('Image upload failed', error);
-      alert('Failed to upload image');
+      alert(`Failed to upload image: ${error.response?.data?.error || error.response?.data?.message || error.message}`);
     } finally {
       setUploadingImage(false);
     }
@@ -198,7 +198,7 @@ export default function AdminProjects() {
                   <input type="text" placeholder="Paste image link here" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="flex-1 bg-black border border-white/10 rounded px-4 py-2 text-white" />
                   <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" id="imageUpload" />
                   <label htmlFor="imageUpload" className="px-4 py-2 bg-gray-800 text-white rounded cursor-pointer hover:bg-gray-700 flex items-center justify-center">
-                    {uploadingImage ? 'Uploading...' : 'Upload File'}
+                    {uploadingImage ? 'Uploading...' : 'Upload from File/Gallery'}
                   </label>
                 </div>
                 {formData.imageUrl && (

@@ -4,12 +4,13 @@ import { motion } from 'framer-motion';
 import Hero3D from '../canvas/Hero3D';
 import Link from 'next/link';
 
-export default function Hero() {
+export default function Hero({ profile }) {
+  const name = profile?.name || "ALI ZOHAIB";
+  const title = profile?.title || "FULL STACK DEVELOPER";
+  const subtitle = profile?.subtitle || "Artificial Intelligence & Robotics Graduate";
+
   return (
     <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
-      {/* 3D Background */}
-      <Hero3D />
-
       {/* Content overlay */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
         <motion.div
@@ -22,18 +23,18 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-5xl md:text-7xl font-bold tracking-tighter mb-4 text-gradient"
+            className="text-5xl md:text-7xl font-bold tracking-tighter mb-4 text-gradient uppercase"
           >
-            ALI ZOHAIB
+            {name}
           </motion.h1>
 
           <motion.h2 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-2xl md:text-3xl text-gray-300 font-light mb-2"
+            className="text-2xl md:text-3xl text-gray-300 font-light mb-2 uppercase"
           >
-            FULL STACK DEVELOPER
+            {title}
           </motion.h2>
 
           <motion.h3
@@ -42,7 +43,7 @@ export default function Hero() {
             transition={{ delay: 0.7, duration: 0.8 }}
             className="text-lg md:text-xl text-[#D32F2F] font-medium mb-10 tracking-widest uppercase"
           >
-            Artificial Intelligence & Robotics Graduate
+            {subtitle}
           </motion.h3>
 
           <motion.div 

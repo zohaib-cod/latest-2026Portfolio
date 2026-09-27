@@ -42,7 +42,7 @@ export default function WavyProfileImage({ position, scale }) {
   return (
     <mesh ref={mesh} position={position} scale={scale}>
       {/* Aspect ratio roughly matches portrait image (e.g. 1 : 1.3) */}
-      <planeGeometry args={[1, 1.3, 128, 128]} />
+      <planeGeometry args={[1, 1.3, 32, 32]} />
       <shaderMaterial
         ref={material}
         transparent
