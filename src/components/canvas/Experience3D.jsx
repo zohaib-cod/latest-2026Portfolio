@@ -87,6 +87,12 @@ function HTMLContent({ data }) {
   const projects = data?.projects || [];
   const experience = data?.experience || [];
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  };
+
   return (
     <Scroll html style={{ width: '100%', height: '100%' }}>
       {/* Section 1: Hero (z = 0) */}
@@ -122,8 +128,8 @@ function HTMLContent({ data }) {
       </div>
 
       {/* Section 3: Skills (z = roughly -40) */}
-      <div className="w-screen h-screen flex items-center justify-end px-10 md:px-32">
-        <div className="max-w-xl w-full glassmorphism p-10 rounded-3xl max-h-[80vh] overflow-y-auto pointer-events-auto custom-scrollbar">
+      <div className="w-screen h-screen flex flex-col items-end justify-start px-10 md:px-32 pt-24 overflow-y-auto pointer-events-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="max-w-xl w-full glassmorphism p-10 rounded-3xl mb-24">
           <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white uppercase tracking-wider text-right">
             Core <span className="text-[#D32F2F]">Skills</span>
           </h2>
@@ -140,20 +146,20 @@ function HTMLContent({ data }) {
       </div>
 
       {/* Section 4: Projects (z = roughly -60) */}
-      <div className="w-screen h-screen flex items-center justify-center px-6">
-        <div className="max-w-6xl w-full text-center mt-20 pointer-events-auto">
+      <div className="w-screen h-screen flex flex-col items-center justify-start px-6 pt-24 overflow-y-auto pointer-events-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="max-w-6xl w-full text-center pb-24">
           <h2 className="text-5xl md:text-7xl font-bold mb-10 text-white uppercase tracking-wider">
             Featured <span className="text-[#D32F2F]">Projects</span>
           </h2>
           
-          <div className="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory custom-scrollbar" style={{ scrollBehavior: 'smooth' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 text-left" style={{ scrollBehavior: 'smooth' }}>
             {projects.map((project, i) => (
-              <div key={i} className="min-w-[300px] md:min-w-[400px] snap-center glassmorphism p-6 rounded-2xl text-left border border-white/10 flex-shrink-0">
+              <div key={i} className="glassmorphism p-6 rounded-2xl border border-white/10 flex flex-col h-full">
                 {project.imageUrl && (
                   <img src={project.imageUrl} alt={project.title} className="w-full h-48 object-cover rounded-xl mb-4" />
                 )}
                 <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-3">{project.description}</p>
+                <p className="text-gray-400 text-sm mb-4 line-clamp-3 flex-grow">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.technologies?.map(t => <span key={t} className="text-xs bg-white/10 px-2 py-1 rounded">{t}</span>)}
                 </div>
@@ -163,14 +169,14 @@ function HTMLContent({ data }) {
                 </div>
               </div>
             ))}
-            {projects.length === 0 && <p className="text-gray-400 w-full text-center">No projects added yet.</p>}
+            {projects.length === 0 && <p className="text-gray-400 w-full text-center col-span-1 md:col-span-2">No projects added yet.</p>}
           </div>
         </div>
       </div>
 
       {/* Section 5: Experience (z = roughly -80) */}
-      <div className="w-screen h-screen flex items-center justify-start px-10 md:px-32">
-        <div className="max-w-3xl w-full glassmorphism p-10 rounded-3xl pointer-events-auto max-h-[80vh] overflow-y-auto custom-scrollbar">
+      <div className="w-screen h-screen flex flex-col items-start justify-start px-10 md:px-32 pt-24 overflow-y-auto pointer-events-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="max-w-3xl w-full glassmorphism p-10 rounded-3xl mb-24">
           <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white uppercase tracking-wider">
             Experience <span className="text-[#D32F2F]">Timeline</span>
           </h2>
@@ -178,7 +184,7 @@ function HTMLContent({ data }) {
             {experience.map((exp, i) => (
               <div key={i} className="relative">
                 <div className="absolute w-4 h-4 bg-[#D32F2F] rounded-full -left-[25px] top-1" />
-                <span className="text-[#D32F2F] font-bold text-sm">{exp.startDate} - {exp.current ? 'Present' : exp.endDate}</span>
+                <span className="text-[#D32F2F] font-bold text-sm">{formatDate(exp.startDate)} - {exp.current ? 'Present' : formatDate(exp.endDate)}</span>
                 <h3 className="text-xl font-bold text-white mt-1">{exp.title}</h3>
                 <h4 className="text-gray-300 mb-2">{exp.company}</h4>
                 <p className="text-sm text-gray-400">{exp.description}</p>
